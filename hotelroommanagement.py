@@ -46,3 +46,40 @@ def clean_name(raw_name):
     words = trimmed.lower().split()
     return " ".join(words).title()
 
+
+# --------- Helper Function 2: Recursive Room Charge (Compulsory Recursion + Doctest #2) ---------
+def calculate_room_bill(room_price, days):
+    """
+    Calculates room bill for all days/nights using recursion instead of multiplication.
+
+    >>> calculate_room_bill(1500.0, 3)
+    4500.0
+    >>> calculate_room_bill(2500.0, 0)
+    0.0
+    """
+    if days <= 0:
+        return 0.0
+    else:
+        return float(room_price) + calculate_room_bill(room_price, days - 1)
+
+
+# --------- Helper Function 3: Discount & Tax Calculator (if-elif-else + Doctest #3) ---------
+def calculate_discount_and_tax(room_bill, days):
+    """
+    Calculates long-stay discount (10% for 3-6 days, 20% for 7+ days) and 12% GST tax.
+
+    >>> calculate_discount_and_tax(4500.0, 3)
+    (450.0, 540.0)
+    >>> calculate_discount_and_tax(1500.0, 1)
+    (0.0, 180.0)
+    """
+    if days >= 7:
+        discount = room_bill * 0.20
+    elif days >= 3 and days <= 6:
+        discount = room_bill * 0.10
+    else:
+        discount = 0.0
+
+    tax = room_bill * 0.12
+    return (round(discount, 2), round(tax, 2))
+
