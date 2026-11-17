@@ -27,3 +27,22 @@ occupied_rooms = set()
 customers = []
 
 DATA_FILE = "hotel_data.txt"
+
+
+# --------- Helper Function 1: Clean Customer Name (String Methods + Doctest #1) ---------
+def clean_name(raw_name):
+    """
+    Cleans extra spaces and converts customer name to Title Case.
+    Uses compulsory string methods: strip(), isdigit(), lower(), split(), join(), title().
+
+    >>> clean_name("   nitin   bhargav  ")
+    'Nitin Bhargav'
+    >>> clean_name("12345")
+    ''
+    """
+    trimmed = raw_name.strip()
+    if trimmed == "" or trimmed.isdigit():
+        return ""
+    words = trimmed.lower().split()
+    return " ".join(words).title()
+
