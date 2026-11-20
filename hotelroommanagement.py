@@ -22,7 +22,7 @@ occupied_room=set()
 room_types = (
     ("Standard", 1500),
     ("Deluxe", 2500),
-    ("Suite", 4000)
+    ("Luxury", 4000)
 )
 
 #---------Room Booking Function Defined----------
@@ -45,6 +45,60 @@ def room_booking():
           if days.isdigit() and days>0:
                break
           print("no of days should be integer")
+
+     print("\n--------ROOM TYPE--------")
+
+     num=1
+     for items in room_types:
+          print(num,".",items[0] ,"Room Price", items[1], "Per Night")
+          num+=1
+
+     while True:
+          roomchoice=input("Enter Room Choice(1-3): ").strip()
+          if roomchoice.isdigit() and 1<=int(roomchoice)<=len(room_types):
+               break
+          print("invalid choice choose from 1,2 or 3 Try again!")
+     roomtype,roomprice= room_types[roomchoice-1]
+
+     assigned_room=None
+     for r in rooms:
+          if rooms[r]["type"]==roomtype and r not in occupied_room:
+               assigned_room=r
+               break
+     if assigned_room is None:
+          print("\nSorry! No", roomtype, "room is available right now")
+          return #taaki aage ki room booked wagera na chal jaye
+     roomtype[assigned_room]["status"]=="Booked"
+     occupied_room.add(assigned_room)
+
+     room_bill= days*roomprice
+     customer={
+          "name": name,
+          "Mobileno": mobile_no,
+          "room_no": assigned_room,
+          "room_type": roomtype,
+          "days": days,
+          "roombill": room_bill,
+          "food_bill": 0
+          
+     }          
+
+     customers.append(customer)
+     print("\nRoom Booked Successfully:")
+     print("assignend room:"+assigned_room)
+     print("custormer name:", name)
+     print("Room Type:", roomtype)
+     print("Room Charges:", room_bill)
+     
+
+          
+
+
+
+
+
+
+
 
      
 
