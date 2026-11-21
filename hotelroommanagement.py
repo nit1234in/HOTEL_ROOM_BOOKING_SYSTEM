@@ -229,8 +229,16 @@ def generate_bill():
                print(f"Tax (12%):    Rs. {tax:.2f}")
                print(f"Final Bill:   Rs. {final_bill:.2f}")
                print("=======================================")
-               return
-          print("customer not found!")
+               checkout=input("Do you want to checkout this guest? Yes/No").strip().lower()
+               if checkout=="yes" or checkout=="y":
+                    room_no=customer["room_no"]
+                    rooms[room_no]["status"]="Available"
+                    if room_no in occupied_room:
+                         occupied_room.remove(room_no)
+                         customers.remove(customer)
+                         print("Check-out successful! Room", room_no, "is now Available.")
+
+     print("customer not found!")
 
 
           
