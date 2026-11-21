@@ -172,15 +172,19 @@ def room_booking():
 def view_customer_details():
      if not customers:
           print("No customer records available..")
-          return  #pehle 
+          return  #agar abhi tak kisi customer ki entry he nahi hui hai customers mein toh yeh turant return karke rok dega aage ki program effieceny ko bada dega
+     names=[]
+     for customer in customers:
+          names.append(customer["name"])
+     names.sort()
+     print("\n ALL CUSTOMERS NAME SORTED (A-Z):", ",".join(names))
 
-
-     
      for customer in customers:
           print("\n---------------------")
           print("customer Name:", customer["name"])
           print("customer Mobileno:", customer["Mobileno"])
           print("Room Type:", customer["room_type"])
+          print("Room Type:", customer["room_no"])
           print("Days Stayed:", customer["days"])
           print("Room Bill:", customer["room_bill"])
           print("food Bill:", customer["food_bill"])
