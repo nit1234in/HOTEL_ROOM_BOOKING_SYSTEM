@@ -89,7 +89,10 @@ def room_booking():
      print("custormer name:", name)
      print("Room Type:", roomtype)
      print("Room Charges:", room_bill)
+
+
      
+
 
           
 
@@ -169,7 +172,10 @@ def room_booking():
 def view_customer_details():
      if not customers:
           print("No customer records available..")
-          return
+          return  #pehle 
+
+
+     
      for customer in customers:
           print("\n---------------------")
           print("customer Name:", customer["name"])
@@ -178,6 +184,7 @@ def view_customer_details():
           print("Days Stayed:", customer["days"])
           print("Room Bill:", customer["room_bill"])
           print("food Bill:", customer["food_bill"])
+
 
 def generate_bill():
      if not customers:
