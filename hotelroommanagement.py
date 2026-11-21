@@ -240,5 +240,11 @@ def generate_bill():
 
      print("customer not found!")
 
+def show_roomstatus("filter_type"=All):
+     for floor in range(1,4):
+          print("Floor", floor, )
+
+
+
 
           
