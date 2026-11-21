@@ -189,6 +189,10 @@ def view_customer_details():
           print("Room Bill:", customer["room_bill"])
           print("food Bill:", customer["food_bill"])
 
+     print("\nCustomer record of the last 3 entries")
+     for recent in customers[-3:]:
+        print(recent["name"], "- Room", recent["room_no"])     
+
 
 def generate_bill():
      if not customers:
