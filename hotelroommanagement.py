@@ -197,19 +197,40 @@ def view_customer_details():
 def generate_bill():
      if not customers:
         print("No customer records available..")
-        return
-     name=input("enter customer name: ")
+        return #agar abhi tak ek bhi customer add nahi hua hai toh kya lega esleye yaha se he functions se bahar ho jayega
+     name=input("enter customer name: ").strip().lower()
      for customer in customers:
           if customer["name"]==name:
+               room_bills=customer["roombill"]
+               food_bills=customer["food_bill"]
+               days=customer["days"]
+               if days>=4:
+                    discount=room_bills*0.10
+               elif days>=7:
+                    discount=room_bills*0.15
+               else:
+                    discount=0
+               sub_total=(room_bills-discount)+discount
+               tax=sub_total*0.12
+               final_bill=sub_total+tax
+
                total_bill=customer["room_bill"]+ customer["food_bill"]
                print("\n===== Final Bill ======")
                print("customer Name:", customer["name"])
-               print("customer Mobileno:", customer["Mobileno"])
+               print("Mobileno:", customer["Mobileno"])
                print("Room Type:", customer["room_type"])
+               print("Room Number:", customer["room_no"])
                print("Room Bill:", customer["room_bill"])
                print("food Bill:", customer["food_bill"])
-               print("Total  Charges:", total_bill)
+               print("Days Stayed:", days)
+               print(f"Room Bill:    Rs. {room_bills:.2f}")
+               print(f"Discount:     Rs. {discount:.2f}")
+               print(f"Food Bill:    Rs. {food_bills:.2f}")
+               print(f"Tax (12%):    Rs. {tax:.2f}")
+               print(f"Final Bill:   Rs. {final_bill:.2f}")
                print("=======================================")
                return
           print("customer not found!")
+
+
           
