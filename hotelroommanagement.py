@@ -90,84 +90,39 @@ def room_booking():
      print("Room Type:", roomtype)
      print("Room Charges:", room_bill)
 
+# ----add food order function --------
+def food_order():
+     if not customers:
+        print("no customer record found..")
+        return
+     name=input("enter customer name: ")
+     for customer in customers:
+          if customer["name"]== name:
+               print("\n--- Food Menu ---")
+               print("1. Tea - 50rs")
+               print("2. Coffee - 100rs")
+               print("3. Lunch - 300rs")
+               print("4. Snacks - 150rs")
+               print("5. Dinner - 450rs")
+               choice =int(input("enter food choices from above: "))
+               qty = int(input("enter quantity: "))
+               if choice==1:
+                    customer["food_bill"]+= 50*qty
+               elif choice==2:
+                    customer["food_bill"]+=100*qty
+               elif choice==3:
+                    customer["food_bill"]+=300*qty
+               elif choice==4:
+                    customer["food_bill"]+=150*qty
+               elif choice==5:
+                    customer["food_bill"]+=450*qty
+               else:
+                    print("invalid food choice, try again!")
+                    return
+          else:
+               print("customer not found!")
 
      
-
-
-          
-
-
-
-
-
-
-
-
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #----customer_details_funcitons-------
 def view_customer_details():
      if not customers:
