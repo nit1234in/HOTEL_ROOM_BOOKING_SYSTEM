@@ -258,7 +258,7 @@ def show_room_grid(filter_type="All"):
     available_count = 0
     for r_no in rooms:
         if r_no not in occupied_room:
-            if filter_type == "All" or rooms[r_no]["type"].lower() == filter_type.lower():
+            if filter_type.lower() == "all" or rooms[r_no]["type"].lower() == filter_type.lower():
                 print("Room", r_no, "-", rooms[r_no]["type"], "- Rs.", rooms[r_no]["price"])
                 available_count += 1
 
