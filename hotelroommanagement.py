@@ -195,11 +195,121 @@ def generate_bill():
 
      print("customer not found!")
 
-def show_roomstatus("filter_type"=All):
+def show_room_grid("filter_type"=All):
      for floor in range(1,4):
-          print("Floor", floor, )
+          print("Floor", floor, ":", end=" ")
+          for index in range(1,4):
+               rmno=floor*100+index
+               status=rooms[rmno]["status"]
+               print(f"{rmno}:{status}", end=" ")
+          print()
+
+     # Show available rooms filtered by type
+     print("\n--- Available Rooms (" + filter_type + ") ---")
+     available_count = 0
+     for r_no in rooms:
+          if r_no not in occupied_room:
+            if filter_type == "All" or rooms[rmno]["type"].lower() == filter_type.lower():
+                print("Room", r_no, "-", rooms[rmno]["type"], "- Rs.", rooms[rmno]["price"])
+                available_count += 1
+
+     if available_count == 0:
+        print("No available rooms found for:", filter_type)
+        return available_count
 
 
+
+#---------File Handling Function (Save & Load)----------
+# Saves or loads customer booking records using hotel_bookings.txt
+def manage_file(mode):
+    if mode == "save":
+        with open("hotel_bookings.txt", "w") as f:
+            for c in customers:
+                data = [
+                    c["name"],
+                    str(c["Mobileno"]),
+                    str(c["room_no"]),
+                    c["room_type"],
+                    str(c["days"]),
+                    str(c["room_bill"]),
+                    str(c["food_bill"])
+                ]
+                f.write(",".join(data) + "\n")
+        return len(customers)
+
+    elif mode == "load":
+        # Create empty file if it does not exist yet (prevents crash without try-except)
+        with open("hotel_bookings.txt", "a") as f:
+            pass
+
+        with open("hotel_bookings.txt", "r") as f:
+            for line in f:
+                line = line.strip()
+                if line == "":
+                    continue
+                parts = line.split(",")
+                r_no = int(parts[2])
+                customer = {
+                    "name": parts[0],
+                    "Mobileno": parts[1],
+                    "room_no": r_no,
+                    "room_type": parts[3],
+                    "days": int(parts[4]),
+                    "room_bill": int(parts[5]),
+                    "food_bill": int(parts[6])
+                }
+                customers.append(customer)
+                if r_no in rooms:
+                    rooms[r_no]["status"] = "Booked"
+                    occupied_room.add(r_no)
+        return len(customers)
+
+
+#--------------MAIN MENU------------------
+
+# Load existing bookings from file when program starts
+loaded = manage_file("load")
+print("Loaded", loaded, "existing booking(s) from file.")
+
+while True:
+    print("\n========== HOTEL MANAGEMENT SYSTEM ==========")
+    print("1. Room Booking")
+    print("2. Food Order")
+    print("3. View Customer Details")
+    print("4. Generate Bill & Check-out")
+    print("5. View Room Grid & Available Rooms")
+    print("6. Save & Exit")
+
+    choice = input("Enter your choice (1-6): ").strip()
+    if not choice.isdigit():
+        print("Invalid choice! Please enter a number from 1 to 6.")
+        continue
+
+    choice = int(choice)
+
+    if choice == 1:
+        room_booking()
+        manage_file("save")
+    elif choice == 2:
+        food_order()
+        manage_file("save")
+    elif choice == 3:
+        view_customer_details()
+    elif choice == 4:
+        generate_bill()
+        manage_file("save")
+    elif choice == 5:
+        room_filter = input("Enter room type (Standard / Deluxe / Luxury / All): ").strip()
+        if room_filter == "":
+            room_filter = "All"
+        count = show_rooms_status(room_filter)
+        print("Total matching available rooms:", count)
+    elif choice == 6:
+        saved = manage_file("save")
+        print("Saved", saved, "booking(s). Thank you for using our system!")
+        break
+    else:
+        print("Invalid choice! Please select 1 to 6.")
 
 
           
