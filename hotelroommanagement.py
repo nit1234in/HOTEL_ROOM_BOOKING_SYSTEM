@@ -1,7 +1,10 @@
+# ---------- Hotel Room Booking System (Group 15) ----------
+
+# List of active customer records (each record is a dictionary)
 customers = []
 
-#---------Hotel Rooms Data (Dictionary)----------
-# Stores room number with its type, price per night, and status taaki pata chale ki kon book kar raha hai warna unlimited room book hote rahenge kuch track nahi ho payegi esleye ess dictionary ko define kara ki hamare paas 9 rooms hai 3 on the first floor ,3 on the second floor and 3 on the third floor 
+# Hotel rooms: room number -> type, price per night, status
+# 9 rooms in total: 3 on each of the 3 floors
 rooms = {
     101: {"type": "Standard", "price": 1500, "status": "Available"},
     102: {"type": "Standard", "price": 1500, "status": "Available"},
@@ -14,10 +17,11 @@ rooms = {
     303: {"type": "Luxury", "price": 4000, "status": "Available"}
 }
 
-#abb hamko check karna hai konsa room occupied hai ya nahi hai toh hame esa data type chaiye jo duplicates entry allow na kare aur eske liye we are defining set esme daal denege jo bhi room check in ke waqt book hoga and while doing the checkout we will remove the room from there aur loop lagake dekhte rahenge kya yeh room availabe hai ya nahi 
+# Set of occupied rooms (a set does not allow duplicates, so a room cannot be booked twice)
+# A room is added at booking time and removed at check-out
 occupied_room = set()
 
-#abhi esme tuple define kar diya kyoki ham terminal se cheeze chalate hai toh galti se bhi koi ess rate card ko change na karde kyoki yeh cheeze toh generally fixed rheti hai toh enko tuple mein rakhna zayda fayde mand hai..
+# Fixed rate card stored as a tuple so it cannot be changed by mistake
 room_types = (
     ("Standard", 1500),
     ("Deluxe", 2500),
@@ -25,33 +29,34 @@ room_types = (
 )
 
 
-#---------Room Booking Function Defined----------
+# ---------- Room Booking Function ----------
 def room_booking():
+     # Name: must not be empty, must not contain a comma, must not already be checked in
     while True:
         name = input("Enter customer name: ").strip().title()
         if name != "":
             break
         print("Name can't be empty try again!")
-
+ # Mobile number: exactly 10 digits
     while True:
         mobile_no = input("Enter 10-digit mobile number: ").strip()
         if mobile_no.isdigit() and len(mobile_no) == 10:
             break
         print("Either number is not 10 digits or you're entering alphabets!")
-
+     # Number of days: positive integer
     while True:
         days = input("Enter no of days: ").strip()
         if days.isdigit() and int(days) > 0:
             days = int(days)
             break
         print("No of days should be a positive integer!")
-
+ # Show room types from the rate card
     print("\n--------ROOM TYPE--------")
     num = 1
     for items in room_types:
         print(num, ".", items[0], "Room - Rs.", items[1], "Per Night")
         num += 1
-
+# Room choice: 1 to 3
     while True:
         roomchoice = input("Enter Room Choice (1-3): ").strip()
         if roomchoice.isdigit() and 1 <= int(roomchoice) <= len(room_types):
@@ -61,15 +66,17 @@ def room_booking():
 
     roomtype, roomprice = room_types[roomchoice - 1]
 
+       # Find the first free room of the chosen type
+    
     assigned_room = None
     for r in rooms:
         if rooms[r]["type"] == roomtype and r not in occupied_room:
             assigned_room = r
             break
-
+    # No room free: stop here so booking is not completed
     if assigned_room is None:
         print("\nSorry! No", roomtype, "room is available right now.")
-        return  # taaki aage ki room booked wagera na chal jaye
+        return  
 
     rooms[assigned_room]["status"] = "Booked"
     occupied_room.add(assigned_room)
@@ -93,7 +100,7 @@ def room_booking():
     print("Room Charges: Rs.", room_bill)
 
 
-#---------Add Food Order Function----------
+# ---------- Food Order Function ----------
 def food_order():
     if not customers:
         print("No customer record found..")
@@ -111,21 +118,21 @@ def food_order():
             print("3. Lunch - 300rs")
             print("4. Snacks - 150rs")
             print("5. Dinner - 450rs")
-
+          # Food choice: 1 to 5
             while True:
                 choice = input("Enter food choice from above (1-5): ").strip()
                 if choice.isdigit() and 1 <= int(choice) <= 5:
                     choice = int(choice)
                     break
                 print("Don't enter alphabets; choose from 1 to 5!")
-
+          # Quantity: positive integer
             while True:
                 qty = input("Enter the quantity: ").strip()
                 if qty.isdigit() and int(qty) > 0:
                     qty = int(qty)
                     break
                 print("Invalid input, try again!")
-
+            # Add the price of the chosen item to the food bill
             if choice == 1:
                 customer["food_bill"] += 50 * qty
             elif choice == 2:
@@ -139,17 +146,18 @@ def food_order():
 
             print("Total Food Bill: Rs.", customer["food_bill"])
             break
-
+ # Checked after the loop so it prints only once
     if not found:
         print("Customer not found!")
 
 
-#---------Customer Details Function----------
+# ---------- View Customer Details Function ----------
 def view_customer_details():
     if not customers:
         print("No customer records available..")
-        return  # agar abhi tak kisi customer ki entry he nahi hui hai customers mein toh yeh turant return karke rok dega aage ki program efficiency ko bada dega
-
+        return  
+    # Collect names and sort them A-Z
+    
     names = []
     for customer in customers:
         names.append(customer["name"])
@@ -165,17 +173,19 @@ def view_customer_details():
         print("Days Stayed:", customer["days"])
         print("Room Bill: Rs.", customer["room_bill"])
         print("Food Bill: Rs.", customer["food_bill"])
-
+  # Last 3 entries using slicing
+    
     print("\nCustomer record of the last 3 entries:")
     for recent in customers[-3:]:
         print(recent["name"], "- Room", recent["room_no"])
 
 
-#---------Generate Bill & Checkout Function----------
+# ---------- Generate Bill & Check-out Function ----------
 def generate_bill():
+    # Nothing to bill if there are no customers yet
     if not customers:
         print("No customer records available..")
-        return  # agar abhi tak ek bhi customer add nahi hua hai toh kya lega esleye yaha se he functions se bahar ho jayega
+        return  
 
     name = input("Enter customer name: ").strip().lower()
     found = False
@@ -187,12 +197,16 @@ def generate_bill():
             food_bills = customer["food_bill"]
             days = customer["days"]
 
+              # Long-stay discount: 15% for 7+ days, 10% for 4-6 days
+            
             if days >= 7:
                 discount = room_bills * 0.15
             elif days >= 4:
                 discount = room_bills * 0.10
             else:
                 discount = 0
+
+             # Discount applies only to the room bill; then add food and 12% tax
 
             sub_total = (room_bills - discount) + food_bills
             tax = sub_total * 0.12
@@ -211,6 +225,8 @@ def generate_bill():
             print(f"Final Bill:   Rs. {final_bill:.2f}")
             print("=======================================")
 
+            # Check-out: free the room and remove the guest record
+
             checkout = input("Do you want to checkout this guest? (yes/no): ").strip().lower()
             if checkout == "yes" or checkout == "y":
                 room_no = customer["room_no"]
@@ -225,8 +241,9 @@ def generate_bill():
         print("Customer not found!")
 
 
-#---------Show Room Grid & Available Rooms Function----------
+# ---------- Room Grid & Available Rooms Function ----------
 def show_room_grid(filter_type="All"):
+     # Nested loops: outer loop for floors, inner loop for rooms on each floor
     print("\n========== HOTEL ROOM GRID ==========")
     for floor in range(1, 4):
         print("Floor", floor, ":", end="  ")
@@ -236,7 +253,7 @@ def show_room_grid(filter_type="All"):
             print(f"[{rmno}: {status}]", end="  ")
         print()
 
-    # Show available rooms filtered by type
+   # List available rooms, filtered by type
     print("\n--- Available Rooms (" + filter_type + ") ---")
     available_count = 0
     for r_no in rooms:
@@ -250,9 +267,8 @@ def show_room_grid(filter_type="All"):
 
     return available_count
 
-
-#---------File Handling Function (Save & Load)----------
-# Saves or loads customer booking records using hotel_bookings.txt
+# ---------- File Handling Function (Save & Load) ----------
+# Saves or loads customer records using hotel_bookings.txt
 def manage_file(mode):
     if mode == "save":
         with open("hotel_bookings.txt", "w") as f:
@@ -292,6 +308,7 @@ def manage_file(mode):
                         rooms[r_no]["status"] = "Booked"
                         occupied_room.add(r_no)
         except FileNotFoundError:
+             # First run: no saved file yet
             return 0
         return len(customers)
 
