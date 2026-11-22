@@ -57,7 +57,7 @@ git clone https://github.com/nit1234in/HOTEL_ROOM_BOOKING_SYSTEM.git
 cd HOTEL_ROOM_BOOKING_SYSTEM
 
 # 2. Run the program
-python last.py
+python hotelroommanagement.py
 ```
 
 On the first run there is no data file yet, and the program starts cleanly with `Loaded 0 existing booking(s) from file.` A `hotel_bookings.txt` file is created automatically once you make a booking.
@@ -132,7 +132,7 @@ Check-out successful! Room 201 is now Available.
 
 | 1. Wrong input guard | 2. Booking & room grid | 3. Bill, check-out & save |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/wrong-input.png" alt="Wrong input guard"> | <img src="docs/screenshots/booking-and-grid.png" alt="Booking and room grid"> | <img src="docs/screenshots/bill-checkout.png" alt="Bill and check-out"> |
+| <img src="wrong-input.png" alt="Wrong input guard"> | <img src="booking-and-grid.png" alt="Booking and room grid"> | <img src="bill-checkout.png" alt="Bill and check-out"> |
 | Out-of-range choice `7` is handled cleanly with 0 crashes | Deluxe Room 201 is assigned and the grid shows it as booked | Reloaded booking, Rs. 12,712.00 bill, and Room 201 freed |
 
 ---
@@ -189,7 +189,7 @@ The discount applies **only to the room bill**. Food is charged at full price, a
 ### Program flow
 
 <p align="center">
-  <img src="docs/screenshots/flowchart.png" alt="Program flowchart" width="90%">
+  <img src="flowchart.png" alt="Program flowchart" width="90%">
 </p>
 
 The same flow as an interactive diagram:
@@ -250,10 +250,12 @@ On startup, each line is parsed back into a guest record and its room is marked 
 
 ```text
 HOTEL_ROOM_BOOKING_SYSTEM/
-├── last.py                 # Complete application
-├── hotel_bookings.txt      # Auto-generated guest records (created on first booking)
-├── docs/
-│   └── screenshots/        # Terminal runs and flowchart used in this README
+├── hotelroommanagement.py   # Complete application
+├── hotel_bookings.txt       # Auto-generated guest records (created on first booking)
+├── flowchart.png            # Program flowchart
+├── wrong-input.png          # Terminal run 1
+├── booking-and-grid.png     # Terminal run 2
+├── bill-checkout.png        # Terminal run 3
 └── README.md
 ```
 
